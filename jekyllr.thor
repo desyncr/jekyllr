@@ -21,42 +21,14 @@ class Jekyllr < Thor
 		puts "Configutation file initialized."
 	end
 
-	desc "update_config", "Update configuration file."
+	desc "config", "Update configuration file."
 	method_option :base_uri, :aliases => '-u', :desc => "Update Base API URI."
-	method_option :no_oath_keys, :aliases => '-k', :desc => "Don't update OAuth keys."
-	method_option :no_hostname, :aliases => '-h', :desc => "Don't update Hostname."
-	method_option :no_path, :aliases => '-p', :desc => "Don't update path to Jekyll repo."
-	def update_config
-		method_name = []
-		args = []
-		unless options[:no_oath_keys]
-			puts "Consumer Key: "
-			args << gets.chomp
-			puts "Secret Key: "
-			args << gets.chomp
-			method_name << ["consumer_key", "secret_key"]
-		end
-
-		unless options[:no_hostname]
-			puts "Hostname: "
-			args << gets.chomp
-			method_name << "hostname"
-		end
-		
-		unless options[:no_path]
-			puts "Absolute Path to Jekyll Repo: "
-			args << gets.chomp
-			method_name << "jekyll_path"
-		end
-
-		if options[:base_uri]
-			puts "Base API URI: "
-			args << gets.chomp
-			method_name << "base_uri"
-		end
-
-		method_name = "update_" + method_name.flatten.join("_and_")
-		ConfigHandler.send(method_name.to_sym, args)
+	method_option :oath_keys, :aliases => '-k', :desc => "Update OAuth keys."
+	method_option :hostname, :aliases => '-h', :desc => "Update Hostname."
+	method_option :path, :aliases => '-p', :desc => "Update path to Jekyll repo."
+	method_option :all, :aliases => '-a', :desc => "Update all config fields."
+	def config(*args)
+		ConfigHandler.config_method_builder(args, options)
 	end
 
 	desc "info", "See basic information about your blog."
