@@ -1,11 +1,10 @@
 require 'psych'
 
-module ConfigHandler
+class ConfigHandler
 
 	def load_config
 		yaml_hash = {}
-		existing_file? = File.exists?('.config.yml')
-		if existing_file?
+		if File.exists?('.config.yml')
 			File.open('.config.yml', 'r') do |config|
 				yaml_hash = Psych.load(config.read)
 			end
@@ -19,7 +18,7 @@ module ConfigHandler
 		end
 	end
 
-	def init_config
+	def self.init_config
 		config = load_config
 		config["base_uri"] = "api.tumblr.com/v2/blog"
 		write_to_config_file(config)

@@ -1,56 +1,41 @@
-# JEKYLLR
-# ================
-# 
-# simple script for using the Tumblr API to pull down blog posts
-# format them in markdown, and post them to a Jekyll-powered site 
-# hosted by GitHub pages.
-# 
-# Pat McGee 8/4/12
-require 'json'
 require 'rest-client'
+require 'json'
 require 'reverse_markdown'
 require 'psych'
+require 'debugger'
 
-require 'config_handler'
-
-module TumblrToJekyll
-	# OAuth 
+class TumblrToJekyll
 	
 	config = {}
-	
-	File.open("../.config.yml", "r") do |file|
+	File.open(".config.yml", "r") do |file|
 		config = Psych.load(file.read)
 	end
 
 	CONSUMER_KEY = config["consumer_key"]
 	SECRET_KEY = config["secret_key"]
-
+	
 	BASE_URI = config["base_uri"]
 	BLOG_HOSTNAME = config["hostname"]
-
+	
 	JEKYLL_PATH = config["jekyll_path"]
 
 
-
-	def basic_info
+	def self.basic_info
 		request_uri = BASE_URI + BLOG_HOSTNAME + "/info?api_key=" + CONSUMER_KEY
 		response = JSON.parse(RestClient.get(request_uri))
 		response = response['response']['blog']
 		puts """
-				Title: #{response['title']}
-				Name: #{response['name']}
-				Description: #{response['description']}
-
-				Number of Posts: #{response['posts']}
-				Number of Likes: #{response['likes']}
-
-				Last Updated: #{DateTime.strptime(response['updated'].to_s, '%s')}
-
-				Ask / Anon: #{response['ask']} / #{response['ask_anon']}
-			"""
+		Title: #{response['title']}
+		URL: http://#{response['name']}.tumblr.com
+		Description: #{response['description']}
+		Number of Posts: #{response['posts']}
+		Number of Likes: #{response['likes']}
+		Last Updated: #{DateTime.strptime(response['updated'].to_s, '%s').strftime("%Y-%m-%d %k:%M:%S")}
+		Ask / Anon: #{response['ask']} / #{response['ask_anon']}
+		"""
 	end
 
-	def convert_text_posts
+	def self.convert_text_posts
 		# determine post to start at
 		offset = Psych.load(File.open('.config.yml','r').read)["offset"].to_i
 
