@@ -1,32 +1,23 @@
 GEM
   remote: https://rubygems.org/
   specs:
-    columnize (0.3.6)
-    debugger (1.6.1)
-      columnize (>= 0.3.1)
-      debugger-linecache (~> 1.2.0)
-      debugger-ruby_core_source (~> 1.2.3)
-    debugger-linecache (1.2.0)
-    debugger-ruby_core_source (1.2.3)
-    json (1.8.0)
-    mime-types (1.23)
-    mini_portile (0.5.1)
-    nokogiri (1.6.0)
-      mini_portile (~> 0.5.0)
-    psych (2.0.0)
-    rest-client (1.6.7)
-      mime-types (>= 1.16)
-    reverse_markdown (0.4.4)
+    json (2.0.2)
+    mini_portile2 (2.1.0)
+    nokogiri (1.7.0)
+      mini_portile2 (~> 2.1.0)
+    psych (2.2.2)
+    reverse_markdown (1.0.3)
       nokogiri
-    thor (0.18.1)
+    thor (0.19.4)
 
 PLATFORMS
   ruby
 
 DEPENDENCIES
-  debugger
   json
   psych
-  rest-client
   reverse_markdown
   thor
+
+BUNDLED WITH
+   1.12.5
